@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Btn } from "./Btn";
 import { Frame } from "./Frame";
@@ -109,13 +110,15 @@ export const PokemonList = ({ setIsLoading }) => {
         <ul className="list">
           {pokemonSingleList.map((pokemon) => (
             <li key={pokemon.id}>
-              <div className="img">
-                <img src={pokemon.sprites.other.home.front_default} alt="" />
-              </div>
-              <div className="text_box">
-                <p className="id">NO.{pokemon.id}</p>
-                <p className="name">{pokemon.forms[0].name}</p>
-              </div>
+              <Link to="pokemon" state={{ id: pokemon.id }}>
+                <div className="img">
+                  <img src={pokemon.sprites.other.home.front_default} alt="" />
+                </div>
+                <div className="text_box">
+                  <p className="id">NO.{pokemon.id}</p>
+                  <p className="name">{pokemon.forms[0].name}</p>
+                </div>
+              </Link>
             </li>
           ))}
         </ul>
