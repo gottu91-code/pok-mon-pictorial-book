@@ -72,52 +72,60 @@ const SPokemonList = styled.div`
 `;
 
 export const PokemonList = ({ setIsLoading }) => {
+  const [pokemonURLList, setPokemonURLList] = useState([]);
   const [pokemonList, setPokemonList] = useState([]);
-  const perPage = 100;
-  const [offset, setOffset] = useState(0);
-  const [pokemonSingleList, setPokemonSingleList] = useState([]);
-
-  const fetchPokemonList = async () => {
-    const res = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${perPage}`
-    );
-    const data = await res.json();
-    setPokemonList(() => [...data.results]);
-    setOffset((prev) => prev + perPage);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  };
 
   useEffect(() => {
-    fetchPokemonList();
+    const fetchAllPokemon = async () => {
+      const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=100");
+      const data = await res.json();
+      for (let i = 0; i < data.results.length; i++) {
+        setPokemonURLList((prev) => [...prev, data.results[i].url]);
+      }
+    };
+    fetchAllPokemon();
   }, []);
 
-  const moreFetchPokemon = () => {
-    setIsLoading(true);
-    fetchPokemonList();
-  };
-
   useEffect(() => {
-    const fetchPokemon = async (url) => {
+    const fetchInfo = async (url) => {
       const res = await fetch(url);
       const data = await res.json();
-      setPokemonSingleList((prev) => [...prev, data]);
+      return [data.id, data.sprites.other.home.front_default];
     };
-    pokemonList.map((pokemon) => {
-      fetchPokemon(pokemon.url);
+    const fetchSpeciesURL = async (url) => {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.species.url;
+    };
+    const fetchName = async (url) => {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.names[0].name;
+    };
+    pokemonURLList.forEach(async (url) => {
+      const [id, image] = await fetchInfo(url);
+      const speciesURL = await fetchSpeciesURL(url);
+      const name = await fetchName(speciesURL);
+      setPokemonList((prev) => [
+        ...prev,
+        {
+          id,
+          image,
+          name,
+        },
+      ]);
     });
-  }, [pokemonList]);
+  }, [pokemonURLList]);
 
   return (
     <SPokemonList>
       <Frame>
         <ul className="list">
-          {pokemonSingleList.map((pokemon) => (
-            <li key={pokemon.id}>
+          {pokemonList.map((pokemon, index) => (
+            <li key={index}>
               <Link to="pokemon" state={{ id: pokemon.id }}>
                 <div className="img">
-                  <img src={pokemon.sprites.other.home.front_default} alt="" />
+                  <img src={pokemon.image} alt="" />
                 </div>
                 <div className="text_box">
                   <p className="id">NO.{pokemon.id}</p>
@@ -127,7 +135,7 @@ export const PokemonList = ({ setIsLoading }) => {
             </li>
           ))}
         </ul>
-        <Btn onClickFunc={moreFetchPokemon}>さらに{perPage}件表示する</Btn>
+        {/* <Btn>さらに{}件表示する</Btn> */}
       </Frame>
     </SPokemonList>
   );
