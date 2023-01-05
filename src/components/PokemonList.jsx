@@ -135,7 +135,6 @@ export const PokemonList = ({ setIsLoading }) => {
             </li>
           ))}
         </ul>
-        aaaa
         {/* <Btn>さらに{}件表示する</Btn> */}
       </Frame>
     </SPokemonList>
