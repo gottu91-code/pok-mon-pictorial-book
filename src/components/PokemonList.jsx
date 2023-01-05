@@ -28,9 +28,11 @@ const SPokemonList = styled.div`
       border-radius: 4px;
       padding: 0 0 15px;
       @media (max-width: 500px) {
-        display: grid;
-        grid-template-columns: 110px 1fr;
-        padding: 10px 0;
+        a {
+          display: grid;
+          grid-template-columns: 110px 1fr;
+          padding: 10px 0;
+        }
       }
       .text_box {
         text-align: center;
@@ -57,6 +59,9 @@ const SPokemonList = styled.div`
           border-radius: 4px;
           display: inline-block;
           padding: 2px 24px;
+          @media (max-width: 500px) {
+            width: fit-content;
+          }
         }
         .id {
           font-size: 0.9rem;
@@ -77,7 +82,7 @@ export const PokemonList = ({ setIsLoading }) => {
       `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${perPage}`
     );
     const data = await res.json();
-    setPokemonList((prev) => [...data.results]);
+    setPokemonList(() => [...data.results]);
     setOffset((prev) => prev + perPage);
     setTimeout(() => {
       setIsLoading(false);
@@ -116,7 +121,7 @@ export const PokemonList = ({ setIsLoading }) => {
                 </div>
                 <div className="text_box">
                   <p className="id">NO.{pokemon.id}</p>
-                  <p className="name">{pokemon.forms[0].name}</p>
+                  <p className="name">{pokemon.name}</p>
                 </div>
               </Link>
             </li>
