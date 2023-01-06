@@ -11,6 +11,14 @@ const SPokemonSingleContainer = styled.div`
   grid-template-columns: 250px 1fr;
   column-gap: 40px;
   align-items: center;
+  @media (max-width: 500px) {
+    width: 100%;
+    grid-template-columns: 1fr;
+    .img {
+      width: 80%;
+      margin-inline: auto;
+    }
+  }
   .text_box {
     background-color: #fafafa;
     border-radius: 8px;

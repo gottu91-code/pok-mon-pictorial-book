@@ -6,10 +6,6 @@ const SBtn = styled.button`
   border-radius: 4px;
   font-weight: bold;
   font-size: 1.1rem;
-  width: fit-content;
-  display: block;
-  margin-inline: auto;
-  margin-top: 40px;
   border: 1px solid #eee;
 `;
 

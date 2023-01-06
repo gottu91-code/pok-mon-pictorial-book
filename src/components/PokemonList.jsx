@@ -69,21 +69,36 @@ const SPokemonList = styled.div`
       }
     }
   }
+  .btn_box {
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    margin-top: 40px;
+  }
 `;
 
 export const PokemonList = ({ setIsLoading }) => {
   const [pokemonURLList, setPokemonURLList] = useState([]);
   const [pokemonList, setPokemonList] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const perPage = 100;
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchAllPokemon = async () => {
-      const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=100");
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/?limit=${perPage}&offset=${offset}`
+      );
       const data = await res.json();
       for (let i = 0; i < data.results.length; i++) {
         setPokemonURLList((prev) => [...prev, data.results[i].url]);
       }
     };
     fetchAllPokemon();
+    setOffset((prev) => prev + perPage);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 700);
   }, []);
 
   useEffect(() => {
@@ -117,6 +132,26 @@ export const PokemonList = ({ setIsLoading }) => {
     });
   }, [pokemonURLList]);
 
+  const viewMore = () => {
+    setIsLoading(true);
+    const fetchAllPokemon = async () => {
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/?limit=${perPage}&offset=${offset}`
+      );
+      const data = await res.json();
+      let URLArray = [];
+      for (let i = 0; i < data.results.length; i++) {
+        URLArray.push(data.results[i].url);
+      }
+      setPokemonURLList(URLArray);
+    };
+    fetchAllPokemon();
+    setOffset((prev) => prev + perPage);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 700);
+  };
+
   return (
     <SPokemonList>
       <Frame>
@@ -135,7 +170,9 @@ export const PokemonList = ({ setIsLoading }) => {
             </li>
           ))}
         </ul>
-        {/* <Btn>さらに{}件表示する</Btn> */}
+        <div className="btn_box">
+          <Btn onClickFunc={viewMore}>さらに{perPage}件表示する</Btn>
+        </div>
       </Frame>
     </SPokemonList>
   );
