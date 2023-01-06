@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const SHeader = styled.header`
@@ -15,7 +16,9 @@ const SHeader = styled.header`
 export const Header = () => {
   return (
     <SHeader>
-      <h1 className="title">ポケモン図鑑</h1>
+      <h1 className="title">
+        <Link to="/">ポケモン図鑑</Link>
+      </h1>
     </SHeader>
   );
 };

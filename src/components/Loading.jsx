@@ -14,6 +14,9 @@ const SLoading = styled.div`
     color: #fff;
     font-size: 1.6rem;
     font-weight: bold;
+    @media (max-width: 500px) {
+      font-size: 1.3rem;
+    }
   }
 `;
 

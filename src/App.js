@@ -8,6 +8,8 @@ import { Loading } from "./components/Loading";
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PokemonSingle } from "./components/PokemonSingle";
+import { Info } from "./components/Info";
+import { PageTop } from "./components/PageTop";
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,10 +20,8 @@ export const App = () => {
         <Header />
         <Main>
           <Routes>
-            <Route
-              path="/"
-              element={<PokemonList setIsLoading={setIsLoading} />}
-            />
+            <Route path="info" element={<Info />}></Route>
+            <Route path="/" element={<PageTop setIsLoading={setIsLoading} />} />
             <Route path="pokemon" element={<PokemonSingle />} />
           </Routes>
         </Main>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Btn } from "./Btn";
+import { BtnBox } from "./BtnBox";
 import { Frame } from "./Frame";
 
 const SPokemonList = styled.div`
@@ -10,6 +11,7 @@ const SPokemonList = styled.div`
     grid-template-columns: repeat(5, 1fr);
     column-gap: 20px;
     row-gap: 20px;
+    margin-bottom: 40px;
     @media (max-width: 1200px) {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -30,9 +32,12 @@ const SPokemonList = styled.div`
       @media (max-width: 500px) {
         a {
           display: grid;
-          grid-template-columns: 110px 1fr;
+          grid-template-columns: 30vw 1fr;
           padding: 10px 0;
         }
+      }
+      .img {
+        padding: 6px;
       }
       .text_box {
         text-align: center;
@@ -53,27 +58,14 @@ const SPokemonList = styled.div`
         }
         .name {
           font-size: 1.2rem;
-          margin-top: 2px;
-          background-color: #4e4e4e;
-          color: #fff;
           border-radius: 4px;
-          display: inline-block;
-          padding: 2px 24px;
-          @media (max-width: 500px) {
-            width: fit-content;
-          }
+          font-weight: bold;
         }
         .id {
           font-size: 0.9rem;
         }
       }
     }
-  }
-  .btn_box {
-    display: flex;
-    justify-content: center;
-    column-gap: 20px;
-    margin-top: 40px;
   }
 `;
 
@@ -170,9 +162,9 @@ export const PokemonList = ({ setIsLoading }) => {
             </li>
           ))}
         </ul>
-        <div className="btn_box">
+        <BtnBox>
           <Btn onClickFunc={viewMore}>さらに{perPage}件表示する</Btn>
-        </div>
+        </BtnBox>
       </Frame>
     </SPokemonList>
   );
